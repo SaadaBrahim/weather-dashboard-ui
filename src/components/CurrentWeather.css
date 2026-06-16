@@ -1,0 +1,121 @@
+.current-weather {
+  width: min(100%, 760px);
+  box-sizing: border-box;
+  padding: 24px;
+  margin: 28px auto 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-h);
+  background: linear-gradient(135deg, var(--accent-bg), var(--social-bg));
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.current-weather__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.current-weather__eyebrow,
+.current-weather__date,
+.current-weather__description,
+.current-weather__detail dt {
+  color: var(--text);
+}
+
+.current-weather__eyebrow {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.current-weather__city {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.current-weather__date {
+  margin-top: 8px;
+  text-transform: capitalize;
+}
+
+.current-weather__description {
+  max-width: 220px;
+  margin: 2px 0 0;
+  text-align: right;
+  font-weight: 650;
+  text-transform: capitalize;
+}
+
+.current-weather__temperatures {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.current-weather__temp {
+  font-weight: 750;
+  line-height: 1;
+}
+
+.current-weather__temp--max {
+  font-size: 54px;
+}
+
+.current-weather__temp--min {
+  color: var(--text);
+  font-size: 28px;
+}
+
+.current-weather__details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 24px 0 0;
+}
+
+.current-weather__detail {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.current-weather__detail dt {
+  font-size: 14px;
+}
+
+.current-weather__detail dd {
+  margin: 4px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .current-weather {
+    padding: 20px;
+  }
+
+  .current-weather__header {
+    flex-direction: column;
+  }
+
+  .current-weather__description {
+    max-width: none;
+    text-align: left;
+  }
+
+  .current-weather__temp--max {
+    font-size: 42px;
+  }
+
+  .current-weather__details {
+    grid-template-columns: 1fr;
+  }
+}
