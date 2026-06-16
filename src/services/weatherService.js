@@ -6,9 +6,15 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api
  */
 export const searchLocations = async (query) => {
   try {
+    // Proviamo a passare il parametro pulito. 
+    // NOTA: Se il tuo backend Node si aspetta 'name' anziché 'q', cambia 'q=${...}' in 'name=${...}'
     const response = await fetch(`${BASE_URL}/weather/locations?q=${encodeURIComponent(query)}`);
+    
     if (!response.ok) throw new Error(`Errore server: ${response.status}`);
-    return await response.json();
+    
+    const data = await response.json();
+    console.log("Dati ricevuti dal backend su Render:", data); // 👇 Questo ci serve per controllare nei log del browser!
+    return data;
   } catch (error) {
     console.error("Errore in searchLocations:", error);
     throw error;
