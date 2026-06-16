@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { searchLocations, getWeatherForecast } from './services/weatherService.js';
 import SearchBar from './components/SearchBar.jsx'; 
 import LocationList from './components/LocationList.jsx'; 
-// 👇 Importiamo i componenti grafici che ha generato Codex
+// Importiamo i componenti grafici che ha generato Codex
 import CurrentWeather from './components/CurrentWeather.jsx';
 import ForecastGrid from './components/ForecastGrid.jsx';
 import './App.css';
@@ -26,8 +26,12 @@ function App() {
 
     try {
       const data = await searchLocations(query);
-      setLocations(data);
-      if (data.length === 0) {
+      
+      // MODIFICA: Estraiamo l'array 'locations' dall'oggetto inviato dal backend
+      const locationsArray = data.locations || []; 
+      setLocations(locationsArray);
+      
+      if (locationsArray.length === 0) {
         setError('Nessuna località trovata. Riprova!');
       }
     } catch (err) {
@@ -46,7 +50,11 @@ function App() {
 
     try {
       const data = await getWeatherForecast(location.latitude, location.longitude);
-      setForecast(data);
+      
+      // MODIFICA: Se il backend restituisce un oggetto con 'forecast', usiamo quello. Altrimenti, assumiamo che 'data' sia già l'array delle previsioni.
+      // prendiamo quello, altrimenti teniamo il 'data' liscio se è già l'array diretto.
+      const forecastData = data.forecast || data;
+      setForecast(forecastData);
     } catch (err) {
       console.error("Dettaglio errore forecast:", err);
       setError('Impossibile recuperare le previsioni meteo.');
@@ -66,7 +74,7 @@ function App() {
 
       <LocationList locations={locations} onSelectLocation={handleSelectLocation} />
 
-      {/* 👇 Sostituito il vecchio tag <pre> con la UI reale di Codex */}
+      {/* Sostituito il vecchio tag <pre> con la UI reale di Codex */}
       {forecast && (
         <div className="forecast-results">
           <CurrentWeather forecastData={forecast} cityName={selectedLocation?.name} />
