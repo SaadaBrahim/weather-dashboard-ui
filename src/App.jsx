@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { searchLocations, getWeatherForecast } from './services/weatherService.js';
-import SearchBar from './components/SearchBar.jsx'; 
-import LocationList from './components/LocationList.jsx'; 
-// Importiamo i componenti grafici che ha generato Codex
+import SearchBar from './components/SearchBar.jsx';
+import LocationList from './components/LocationList.jsx';
 import CurrentWeather from './components/CurrentWeather.jsx';
 import ForecastGrid from './components/ForecastGrid.jsx';
 import './App.css';
@@ -26,17 +25,16 @@ function App() {
 
     try {
       const data = await searchLocations(query);
-      
-      // MODIFICA: Estraiamo l'array 'locations' dall'oggetto inviato dal backend
-      const locationsArray = data.locations || []; 
+
+      const locationsArray = data.locations || [];
       setLocations(locationsArray);
-      
+
       if (locationsArray.length === 0) {
-        setError('Nessuna località trovata. Riprova!');
+        setError('Nessuna localita trovata. Riprova!');
       }
     } catch (err) {
-      console.error("Dettaglio errore ricerca:", err);
-      setError('Errore durante la ricerca della località. Controlla il backend.');
+      console.error('Dettaglio errore ricerca:', err);
+      setError('Errore durante la ricerca della localita. Controlla il backend.');
     } finally {
       setIsLoading(false);
     }
@@ -44,19 +42,17 @@ function App() {
 
   const handleSelectLocation = async (location) => {
     setSelectedLocation(location);
-    setLocations([]); 
+    setLocations([]);
     setIsLoading(true);
     setError(null);
 
     try {
       const data = await getWeatherForecast(location.latitude, location.longitude);
-      
-      // MODIFICA: Se il backend restituisce un oggetto con 'forecast', usiamo quello. Altrimenti, assumiamo che 'data' sia già l'array delle previsioni.
-      // prendiamo quello, altrimenti teniamo il 'data' liscio se è già l'array diretto.
+
       const forecastData = data.forecast || data;
       setForecast(forecastData);
     } catch (err) {
-      console.error("Dettaglio errore forecast:", err);
+      console.error('Dettaglio errore forecast:', err);
       setError('Impossibile recuperare le previsioni meteo.');
     } finally {
       setIsLoading(false);
@@ -64,24 +60,31 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <h1>☀️ Dashboard Meteo</h1>
-      
-      <SearchBar query={query} setQuery={setQuery} onSearch={handleSearch} />
+    <main className="app-shell">
+      <div className="app-container">
+        <header className="app-hero">
+          <span className="app-eyebrow">Live Weather</span>
+          <h1>Dashboard Meteo</h1>
+          <p className="app-subtitle">Previsioni nitide, superfici frosted e dettagli pensati per ogni schermo.</p>
+        </header>
 
-      {isLoading && <p className="loading">Caricamento in corso...</p>}
-      {error && <p className="error-message">{error}</p>}
+        <section className="search-panel" aria-label="Ricerca meteo">
+          <SearchBar query={query} setQuery={setQuery} onSearch={handleSearch} />
+        </section>
 
-      <LocationList locations={locations} onSelectLocation={handleSelectLocation} />
+        {isLoading && <p className="status-panel loading">Caricamento in corso...</p>}
+        {error && <p className="status-panel error-message">{error}</p>}
 
-      {/* Sostituito il vecchio tag <pre> con la UI reale di Codex */}
-      {forecast && (
-        <div className="forecast-results">
-          <CurrentWeather forecastData={forecast} cityName={selectedLocation?.name} />
-          <ForecastGrid forecastData={forecast} />
-        </div>
-      )}
-    </div>
+        <LocationList locations={locations} onSelectLocation={handleSelectLocation} />
+
+        {forecast && (
+          <section className="forecast-results" aria-label="Risultati meteo">
+            <CurrentWeather forecastData={forecast} cityName={selectedLocation?.name} />
+            <ForecastGrid forecastData={forecast} />
+          </section>
+        )}
+      </div>
+    </main>
   );
 }
 
