@@ -1,5 +1,5 @@
-import React from 'react';
 import { Sun, Cloud, CloudRain, CloudLightning, Snowflake, CloudFog, Wind, Droplets } from 'lucide-react';
+import './CurrentWeather.css';
 
 const getWeatherDetails = (code, backendDesc) => {
   if (code === 0) return { icon: Sun, label: backendDesc || 'SERENO' };
@@ -12,10 +12,8 @@ const getWeatherDetails = (code, backendDesc) => {
 };
 
 const CurrentWeather = ({ forecastData, cityName }) => {
-  // Validazione: controlliamo che arrivi un array valido
   if (!Array.isArray(forecastData) || forecastData.length === 0) return null;
 
-  // Il primo oggetto dell'array (indice 0) corrisponde a OGGI
   const todayData = forecastData[0];
 
   const { icon: WeatherIcon, label: weatherLabel } = getWeatherDetails(todayData.weatherCode, todayData.description);
@@ -24,28 +22,28 @@ const CurrentWeather = ({ forecastData, cityName }) => {
     weekday: 'short',
     day: '2-digit',
     month: 'short',
-    year: 'numeric'
+    year: 'numeric',
   }).toUpperCase();
 
   return (
     <div className="current-weather-card">
       <div className="card-header">
         <div>
-          <span className="badge-today">DATALINK // LIVE</span>
+          <span className="badge-today">Meteo live</span>
           <h2 className="city-title">{cityName}</h2>
-          <p className="date-text">STARDATE: {todayStr}</p>
+          <p className="date-text">{todayStr}</p>
         </div>
         <div className="weather-status-wrapper">
           <WeatherIcon className="main-weather-icon" size={54} />
-          <span className="status-label">SYSTEM: {weatherLabel.toUpperCase()}</span>
+          <span className="status-label">{weatherLabel.toUpperCase()}</span>
         </div>
       </div>
 
       <div className="card-body">
         <div className="temp-section">
           <span className="main-temp">{Math.round(todayData.temperatureMax)}°C</span>
-          <p style={{ margin: '5px 0 0 0', color: 'var(--text-muted)', fontSize: '0.9rem', letterSpacing: '0.1em' }}>
-            MIN: {Math.round(todayData.temperatureMin)}°C // MAX: {Math.round(todayData.temperatureMax)}°C
+          <p className="temp-range">
+            Min {Math.round(todayData.temperatureMin)}°C / Max {Math.round(todayData.temperatureMax)}°C
           </p>
         </div>
 
@@ -53,7 +51,7 @@ const CurrentWeather = ({ forecastData, cityName }) => {
           <div className="stat-item">
             <Droplets size={18} className="text-blue" />
             <div>
-              <p className="stat-label">HUMIDITY.PROB</p>
+              <p className="stat-label">Prob. pioggia</p>
               <p className="stat-value">{todayData.precipitationProbability}%</p>
             </div>
           </div>
@@ -61,8 +59,8 @@ const CurrentWeather = ({ forecastData, cityName }) => {
           <div className="stat-item">
             <Wind size={18} className="text-teal" />
             <div>
-              <p className="stat-label">WIND.VECTOR</p>
-              <p className="stat-value">{Math.round(todayData.windSpeed)} KM/H</p>
+              <p className="stat-label">Vento</p>
+              <p className="stat-value">{Math.round(todayData.windSpeed)} km/h</p>
             </div>
           </div>
         </div>

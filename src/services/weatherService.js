@@ -1,7 +1,4 @@
-// 1. Modificato il nome della variabile in VITE_API_URL per combaciare con Vercel
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'; 
-
-// 2. Uniamo l'URL di base con il pezzetto '/api' in modo sicuro
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, ""); 
 const BASE_URL = `${API_URL}/api`;
 
 /**
