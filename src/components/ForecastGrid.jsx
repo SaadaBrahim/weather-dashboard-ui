@@ -1,5 +1,5 @@
-import React from 'react';
 import { Sun, Cloud, CloudRain, CloudLightning, Snowflake, CloudFog } from 'lucide-react';
+import './ForecastGrid.css';
 
 const getWeatherIcon = (code) => {
   if (code === 0) return Sun;
@@ -14,12 +14,11 @@ const getWeatherIcon = (code) => {
 const ForecastGrid = ({ forecastData }) => {
   if (!Array.isArray(forecastData) || forecastData.length <= 1) return null;
 
-  // Usiamo .slice(1) per escludere oggi (indice 0) e prendere solo i giorni futuri
   const futureDays = forecastData.slice(1, 6);
 
   return (
     <div className="forecast-container">
-      <h3 className="forecast-title">PROJECTION // 5-DAY FORECAST</h3>
+      <h3 className="forecast-title">Prossimi 5 giorni</h3>
       <div className="forecast-grid">
         {futureDays.map((day, index) => {
           const DayIcon = getWeatherIcon(day.weatherCode);
@@ -34,12 +33,10 @@ const ForecastGrid = ({ forecastData }) => {
                 <DayIcon size={32} className="main-weather-icon" />
               </div>
               <div className="forecast-temp-range">
-                <span style={{ color: 'var(--neon-cyan)' }}>{Math.round(day.temperatureMax)}°C</span>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginLeft: '6px' }}>
-                  {Math.round(day.temperatureMin)}°
-                </span>
+                <span className="forecast-temp-max">{Math.round(day.temperatureMax)}°C</span>
+                <span className="forecast-temp-min">{Math.round(day.temperatureMin)}°</span>
               </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '6px', textTransform: 'uppercase' }}>
+              <div className="forecast-description">
                 {day.description}
               </div>
             </div>
